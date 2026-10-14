@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Juell-Tech Quick Support</title>
+<meta name="description" content="Let Juell-Tech help you on your PC with one click. Nothing is installed, and nothing happens until you press Allow.">
+<style>
+  :root { --bg:#fffdfb; --ink:#231f20; --soft:#5e5658; --line:#e6dfdc; --brand:#b3151f; --card:#ffffff; --good:#1c7a45; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1a1517; --ink:#f3eded; --soft:#b9adaf; --line:#3a3033; --brand:#e0424d; --card:#231c1f; --good:#59c58b; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 "Segoe UI", system-ui, sans-serif; }
+  header { background:linear-gradient(#c81e29,#8f0f18); color:#fff; padding:40px 16px; text-align:center; }
+  header h1 { margin:0 0 4px; font-size:30px; font-weight:600; }
+  header p { margin:0; opacity:.9; }
+  main { max-width:720px; margin:0 auto; padding:24px 16px 56px; }
+  .btn { display:inline-block; background:var(--brand); color:#fff; text-decoration:none; font-weight:600; padding:14px 26px; border-radius:8px; font-size:18px; }
+  .btn:hover { opacity:.92; }
+  .center { text-align:center; margin:28px 0 8px; }
+  .small { color:var(--soft); font-size:14px; text-align:center; margin:0 0 28px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:18px 0; }
+  h2 { font-size:19px; margin:0 0 8px; }
+  ol, ul { margin:8px 0 0; padding-left:22px; }
+  li { margin:4px 0; }
+  code { font:600 18px/1.4 Consolas, "Cascadia Mono", monospace; background:rgba(128,128,128,.14); padding:3px 8px; border-radius:6px; }
+  #state { text-align:center; font-weight:600; margin:0 0 6px; }
+  .bad { color:var(--brand); } .ok { color:var(--good); }
+  footer { text-align:center; color:var(--soft); font-size:14px; padding:0 16px 32px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Juell-Tech Quick Support</h1>
+  <p>Let us help you on your PC. Nothing is installed.</p>
+</header>
+<main>
+  <p id="state"></p>
+  <div class="center" id="go"><a class="btn" id="download" href="https://github.com/Juell-Tech/j-desk-support/releases/latest/download/Juell-Tech-Quick-Support.exe">Download Quick Support</a></div>
+  <p class="small">Windows 7 and later, including Windows Server 2008 R2. About 13&nbsp;MB.</p>
+
+  <section>
+    <h2>What to do</h2>
+    <ol>
+      <li>Press <b>Download Quick Support</b> above, then open the file it downloads. If Windows shows a blue &ldquo;Windows protected your PC&rdquo; box, choose <b>More info</b>, then <b>Run anyway</b>.</li>
+      <li>Choose <b>Yes</b> when Windows asks for permission.</li>
+      <li>A small window says <b>Ready</b>. Leave it open and let us know you are ready. If it asks for a code, type this one: <code id="code">(your code)</code></li>
+      <li>When we connect, a box asks <b>Allow it?</b> Choose <b>Yes</b> only if you are expecting us.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>You stay in charge</h2>
+    <ul>
+      <li>Nothing happens until you press <b>Yes</b> on the box that appears when we connect.</li>
+      <li>Press <b>End support</b> in the small window at any time to stop. Everything is removed when it closes: nothing stays on your PC.</li>
+      <li>This link only works for 24 hours.</li>
+    </ul>
+  </section>
+</main>
+<footer>Juell-Tech &middot; Quick Support</footer>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search).get("c") || "";
+  var code = q.trim().toUpperCase();
+  var ok = /^Q-[0-9A-F]{8}-[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{4}-[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{4}-[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{4}$/.test(code);
+  var state = document.getElementById("state");
+  if (!ok) {
+    state.className = "bad";
+    state.textContent = "This link is incomplete. Please ask Juell-Tech to send it again.";
+    document.getElementById("go").style.display = "none";
+    return;
+  }
+  document.getElementById("code").textContent = code;
+  var expires = parseInt(code.substr(2, 8), 16) * 1000;
+  if (Date.now() >= expires) {
+    state.className = "bad";
+    state.textContent = "This link has expired. Please ask Juell-Tech for a new one.";
+    document.getElementById("go").style.display = "none";
+    return;
+  }
+  state.className = "ok";
+  state.textContent = "Your support link is ready. It works until " + new Date(expires).toLocaleString() + ".";
+  // The program picks the code up from the clipboard, so there is nothing to type.
+  document.getElementById("download").addEventListener("click", function () {
+    try { navigator.clipboard.writeText(code); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
