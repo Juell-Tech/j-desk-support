@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Juell-Tech Quick Support</title>
-<meta name="description" content="Let Juell-Tech help you on your PC with one click. Nothing is installed, and nothing happens until you press Allow.">
+<meta name="description" content="Get help from Juell-Tech on your PC with one click. Nothing is installed, and nothing happens until you press Allow.">
 <style>
   :root { --bg:#fffdfb; --ink:#231f20; --soft:#5e5658; --line:#e6dfdc; --brand:#b3151f; --card:#ffffff; --good:#1c7a45; }
   @media (prefers-color-scheme: dark) { :root { --bg:#1a1517; --ink:#f3eded; --soft:#b9adaf; --line:#3a3033; --brand:#e0424d; --card:#231c1f; --good:#59c58b; } }
@@ -14,16 +14,21 @@
   header h1 { margin:0 0 4px; font-size:30px; font-weight:600; }
   header p { margin:0; opacity:.9; }
   main { max-width:720px; margin:0 auto; padding:24px 16px 56px; }
-  .btn { display:inline-block; background:var(--brand); color:#fff; text-decoration:none; font-weight:600; padding:14px 26px; border-radius:8px; font-size:18px; }
-  .btn:hover { opacity:.92; }
-  .center { text-align:center; margin:28px 0 8px; }
-  .small { color:var(--soft); font-size:14px; text-align:center; margin:0 0 28px; }
   section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:18px 0; }
   h2 { font-size:19px; margin:0 0 8px; }
+  label { display:block; font-weight:600; margin:12px 0 4px; }
+  input, textarea { width:100%; font:inherit; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+  textarea { min-height:96px; resize:vertical; }
+  .btn { display:inline-block; background:var(--brand); color:#fff; border:0; cursor:pointer; text-decoration:none; font:600 18px/1.2 inherit; padding:14px 26px; border-radius:8px; }
+  .btn:hover { opacity:.92; }
+  .btn.ghost { background:transparent; color:var(--brand); border:1px solid var(--brand); font-size:16px; padding:10px 18px; }
+  .center { text-align:center; margin:22px 0 4px; }
+  .small { color:var(--soft); font-size:14px; }
   ol, ul { margin:8px 0 0; padding-left:22px; }
   li { margin:4px 0; }
-  code { font:600 18px/1.4 Consolas, "Cascadia Mono", monospace; background:rgba(128,128,128,.14); padding:3px 8px; border-radius:6px; }
-  #state { text-align:center; font-weight:600; margin:0 0 6px; }
+  code { font:600 15px/1.4 Consolas, "Cascadia Mono", monospace; background:rgba(128,128,128,.14); padding:2px 8px; border-radius:6px; word-break:break-all; }
+  #steps, #done { display:none; }
+  #note { font-weight:600; margin:8px 0 0; }
   .bad { color:var(--brand); } .ok { color:var(--good); }
   footer { text-align:center; color:var(--soft); font-size:14px; padding:0 16px 32px; }
 </style>
@@ -31,21 +36,40 @@
 <body>
 <header>
   <h1>Juell-Tech Quick Support</h1>
-  <p>Let us help you on your PC. Nothing is installed.</p>
+  <p>Get help on your PC with one click. Nothing is installed.</p>
 </header>
 <main>
-  <p id="state"></p>
-  <div class="center" id="go"><a class="btn" id="download" href="https://github.com/Juell-Tech/j-desk-support/releases/latest/download/Juell-Tech-Quick-Support.exe">Download Quick Support</a></div>
-  <p class="small">Windows 7 and later, including Windows Server 2008 R2. About 13&nbsp;MB.</p>
+  <section id="form">
+    <h2>Tell us who you are</h2>
+    <label for="name">Your name</label>
+    <input id="name" maxlength="60" autocomplete="name" placeholder="For example Mrs Patel">
+    <label for="message">What do you need help with? (optional)</label>
+    <textarea id="message" maxlength="300" placeholder="For example: my printer will not print"></textarea>
+    <p id="note"></p>
+    <div class="center"><button class="btn" id="start" type="button">Start Quick Support</button></div>
+    <p class="small center">Windows 7 and later, including Windows Server 2008 R2. About 13&nbsp;MB.</p>
+  </section>
 
-  <section>
-    <h2>What to do</h2>
+  <section id="nodesk" style="display:none">
+    <h2>Instant support is not available right now</h2>
+    <p>Please email the support desk below and we will get back to you.</p>
+  </section>
+
+  <section id="steps">
+    <h2>Now do this</h2>
     <ol>
-      <li>Press <b>Download Quick Support</b> above, then open the file it downloads. If Windows shows a blue &ldquo;Windows protected your PC&rdquo; box, choose <b>More info</b>, then <b>Run anyway</b>.</li>
+      <li>Open the file that is downloading (it is called <b>Juell-Tech-Quick-Support.exe</b>). If Windows shows a blue &ldquo;Windows protected your PC&rdquo; box, choose <b>More info</b>, then <b>Run anyway</b>.</li>
       <li>Choose <b>Yes</b> when Windows asks for permission.</li>
-      <li>A small window says <b>Ready</b>. Leave it open and let us know you are ready. If it asks for a code, type this one: <code id="code">(your code)</code></li>
-      <li>When we connect, a box asks <b>Allow it?</b> Choose <b>Yes</b> only if you are expecting us.</li>
+      <li>A small window tells Juell-Tech support you are here. <b>Leave it open.</b> When someone picks up, a box asks <b>Allow it?</b> Choose <b>Yes</b> only if you are expecting us.</li>
     </ol>
+    <p class="small">If the program asks for a request, paste this (it was also copied for you):</p>
+    <p><code id="payload"></code></p>
+    <p class="center"><a class="btn ghost" id="again" href="#">Download again</a></p>
+  </section>
+
+  <section id="mail">
+    <h2>Rather send an email?</h2>
+    <p>If nobody is available, or you prefer email, send your request to the support desk: <a id="mailto" href="#">email <span id="deskmail">the support desk</span></a>.</p>
   </section>
 
   <section>
@@ -53,37 +77,93 @@
     <ul>
       <li>Nothing happens until you press <b>Yes</b> on the box that appears when we connect.</li>
       <li>Press <b>End support</b> in the small window at any time to stop. Everything is removed when it closes: nothing stays on your PC.</li>
-      <li>This link only works for 24 hours.</li>
+      <li>Your request stops working after 6 hours.</li>
     </ul>
   </section>
 </main>
 <footer>Juell-Tech &middot; Quick Support</footer>
 <script>
 (function () {
-  var q = new URLSearchParams(location.search).get("c") || "";
-  var code = q.trim().toUpperCase();
-  var ok = /^Q-[0-9A-F]{8}-[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{4}-[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{4}-[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{4}$/.test(code);
-  var state = document.getElementById("state");
-  if (!ok) {
-    state.className = "bad";
-    state.textContent = "This link is incomplete. Please ask Juell-Tech to send it again.";
-    document.getElementById("go").style.display = "none";
-    return;
+  var EXE = "https://github.com/Juell-Tech/j-desk-support/releases/latest/download/Juell-Tech-Quick-Support.exe";
+  var ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  var HOURS = 6;
+  var desk = { email: "support@juelltech.com", desk: [] };
+
+  // The desk list (the J-Desk clients that should be told) and the support email come from desk.json, which Juell-Tech edits.
+  fetch("desk.json", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (d) {
+    if (d && Array.isArray(d.desk)) desk.desk = d.desk.filter(function (id) { return /^[0-9a-f]{64}$/.test(String(id).trim()); });
+    if (d && d.email) desk.email = String(d.email);
+    document.getElementById("deskmail").textContent = desk.email;
+    updateMail();
+    noDeskCheck();
+  }).catch(function () { updateMail(); noDeskCheck(); });
+
+  // With nobody on the support desk set up to receive requests, an instant request would go nowhere: ask for an email.
+  function noDeskCheck() {
+    if (desk.desk.length === 0) {
+      document.getElementById("form").style.display = "none";
+      document.getElementById("nodesk").style.display = "block";
+    }
   }
-  document.getElementById("code").textContent = code;
-  var expires = parseInt(code.substr(2, 8), 16) * 1000;
-  if (Date.now() >= expires) {
-    state.className = "bad";
-    state.textContent = "This link has expired. Please ask Juell-Tech for a new one.";
-    document.getElementById("go").style.display = "none";
-    return;
+
+  function clean(text, max) {
+    return String(text || "").replace(/[\u0000-\u001f\u007f|]/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
   }
-  state.className = "ok";
-  state.textContent = "Your support link is ready. It works until " + new Date(expires).toLocaleString() + ".";
-  // The program picks the code up from the clipboard, so there is nothing to type.
-  document.getElementById("download").addEventListener("click", function () {
-    try { navigator.clipboard.writeText(code); } catch (e) {}
+
+  // Same shape as jdesk_core::quick: Q-<expiry hex>-XXXX-XXXX-XXXX.
+  function makeCode() {
+    var expiry = Math.floor(Date.now() / 1000) + HOURS * 3600;
+    var hex = expiry.toString(16).toUpperCase();
+    while (hex.length < 8) hex = "0" + hex;
+    var bytes = new Uint8Array(12);
+    (window.crypto || window.msCrypto).getRandomValues(bytes);
+    var groups = [];
+    for (var g = 0; g < 3; g++) {
+      var s = "";
+      for (var i = 0; i < 4; i++) s += ALPHABET.charAt(bytes[g * 4 + i] % 32);
+      groups.push(s);
+    }
+    return "Q-" + hex + "-" + groups.join("-");
+  }
+
+  function buildPayload(code, name, message) {
+    return "JDQS1|" + code + "|" + desk.desk.join(",") + "|" + clean(desk.email, 120) + "|" + clean(name, 60) + "|" + clean(message, 300);
+  }
+  window.JDQuick = { makeCode: makeCode, buildPayload: buildPayload, clean: clean, setDesk: function (d) { desk = d; } };
+
+  function mailLink() {
+    var name = clean(document.getElementById("name").value, 60);
+    var message = clean(document.getElementById("message").value, 300);
+    var body = "Hello Juell-Tech support,\r\n\r\nI need help.\r\n\r\nName: " + name + "\r\nMessage: " + message + "\r\n";
+    return "mailto:" + desk.email + "?subject=" + encodeURIComponent("Support request") + "&body=" + encodeURIComponent(body);
+  }
+  function updateMail() { document.getElementById("mailto").href = mailLink(); }
+  document.getElementById("name").addEventListener("input", updateMail);
+  document.getElementById("message").addEventListener("input", updateMail);
+
+  var lastPayload = "";
+  function copy(text) {
+    try { navigator.clipboard.writeText(text); } catch (e) {}
+  }
+
+  document.getElementById("start").addEventListener("click", function () {
+    var note = document.getElementById("note");
+    var name = clean(document.getElementById("name").value, 60);
+    if (!name) { note.className = "bad"; note.textContent = "Please type your name first."; return; }
+    note.textContent = "";
+    lastPayload = buildPayload(makeCode(), name, document.getElementById("message").value);
+    copy(lastPayload);
+    document.getElementById("payload").textContent = lastPayload;
+    document.getElementById("form").style.display = "none";
+    document.getElementById("steps").style.display = "block";
+    window.location.href = EXE;
   });
+  document.getElementById("again").addEventListener("click", function (e) {
+    e.preventDefault();
+    copy(lastPayload);
+    window.location.href = EXE;
+  });
+  updateMail();
 })();
 </script>
 </body>
