@@ -43,7 +43,7 @@
     <h2>Tell us who you are</h2>
     <label for="name">Your name</label>
     <input id="name" maxlength="60" autocomplete="name" placeholder="For example Mrs Patel">
-    <label for="message">What do you need help with? (optional)</label>
+    <label for="message">What do you need help with please?</label>
     <textarea id="message" maxlength="300" placeholder="For example: my printer will not print"></textarea>
     <p id="note"></p>
     <div class="center"><button class="btn" id="start" type="button">Start Quick Support</button></div>
@@ -60,7 +60,7 @@
     <ol>
       <li>Open the file that is downloading (it is called <b>Juell-Tech-Quick-Support.exe</b>). If Windows shows a blue &ldquo;Windows protected your PC&rdquo; box, choose <b>More info</b>, then <b>Run anyway</b>.</li>
       <li>Choose <b>Yes</b> when Windows asks for permission.</li>
-      <li>A small window tells Juell-Tech support you are here. <b>Leave it open.</b> When someone picks up, a box asks <b>Allow it?</b> Choose <b>Yes</b> only if you are expecting us.</li>
+      <li>A small window asks for your name and what you need help with (already filled in from this page). Press <b>Send request</b>, then <b>leave it open</b>. It tells Juell-Tech support you are here. When someone picks up, a box asks <b>Allow it?</b> Choose <b>Yes</b> only if you are expecting us.</li>
     </ol>
     <p class="small">If the program asks for a request, paste this (it was also copied for you):</p>
     <p><code id="payload"></code></p>
@@ -150,6 +150,7 @@
     var note = document.getElementById("note");
     var name = clean(document.getElementById("name").value, 60);
     if (!name) { note.className = "bad"; note.textContent = "Please type your name first."; return; }
+    if (!clean(document.getElementById("message").value, 300)) { note.className = "bad"; note.textContent = "Please say what you need help with."; return; }
     note.textContent = "";
     lastPayload = buildPayload(makeCode(), name, document.getElementById("message").value);
     copy(lastPayload);
